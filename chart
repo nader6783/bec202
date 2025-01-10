@@ -1,0 +1,64 @@
+import React from 'react';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, ReferenceLine, Label } from 'recharts';
+
+const data = [
+  {year: '2010', price: 1224.52, event: 'بداية أزمة الديون الأوروبية'},
+  {year: '2011', price: 1571.52, event: 'خفض التصنيف الائتماني الأمريكي'},
+  {year: '2012', price: 1668.98, event: 'ذروة سعرية'},
+  {year: '2013', price: 1411.23, event: 'بداية التصحيح'},
+  {year: '2014', price: 1266.40, event: 'تعافي الاقتصاد الأمريكي'},
+  {year: '2015', price: 1160.06, event: 'أدنى مستوى'},
+  {year: '2016', price: 1250.74, event: 'Brexit'},
+  {year: '2017', price: 1257.12, event: 'استقرار نسبي'},
+  {year: '2018', price: 1268.49, event: 'الحرب التجارية'},
+  {year: '2019', price: 1393.34, event: 'توترات جيوسياسية'},
+  {year: '2020', price: 1773.73, event: 'جائحة كوفيد-19'},
+  {year: '2021', price: 1798.61, event: 'التضخم العالمي'},
+  {year: '2022', price: 1800.09, event: 'الحرب الروسية الأوكرانية'},
+  {year: '2023', price: 1943.67, event: 'أزمة البنوك الإقليمية'},
+  {year: '2024', price: 2021.50, event: 'مستويات قياسية جديدة'}
+];
+
+const GoldPriceDetailedChart = () => {
+  return (
+    <div className="w-full h-96 p-4">
+      <ResponsiveContainer width="100%" height="100%">
+        <LineChart data={data}>
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="year" />
+          <YAxis domain={[1000, 2200]} />
+          <Tooltip content={({ active, payload, label }) => {
+            if (active && payload && payload.length) {
+              return (
+                <div className="bg-white p-4 border rounded shadow">
+                  <p className="font-bold">{`عام ${label}`}</p>
+                  <p>{`السعر: $${payload[0].value}`}</p>
+                  <p>{`الحدث: ${data.find(d => d.year === label)?.event}`}</p>
+                </div>
+              );
+            }
+            return null;
+          }} />
+          <Legend />
+          <ReferenceLine y={1668.98} stroke="red" strokeDasharray="3 3">
+            <Label value="ذروة 2012" position="right" />
+          </ReferenceLine>
+          <ReferenceLine y={1160.06} stroke="blue" strokeDasharray="3 3">
+            <Label value="قاع 2015" position="right" />
+          </ReferenceLine>
+          <Line 
+            type="monotone" 
+            dataKey="price" 
+            stroke="#FFD700" 
+            name="سعر الذهب (دولار/أونصة)" 
+            strokeWidth={2}
+            dot={{ r: 4 }}
+            activeDot={{ r: 8 }}
+          />
+        </LineChart>
+      </ResponsiveContainer>
+    </div>
+  );
+};
+
+export default GoldPriceDetailedChart;
